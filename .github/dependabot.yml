@@ -1,0 +1,29 @@
+version: 2
+updates:
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+    # 公開直後に見つかる不正なリリースを取り込まないように、公開から 7 日たったバージョンだけを PR にする
+    cooldown:
+      default-days: 7
+
+  - package-ecosystem: npm
+    directory: /web
+    schedule:
+      interval: weekly
+    cooldown:
+      default-days: 7
+    groups:
+      web-minor-and-patch:
+        update-types: [minor, patch]
+
+  - package-ecosystem: npm
+    directory: /infra
+    schedule:
+      interval: weekly
+    cooldown:
+      default-days: 7
+    groups:
+      infra-minor-and-patch:
+        update-types: [minor, patch]

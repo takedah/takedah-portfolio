@@ -68,6 +68,14 @@ test('デプロイ用ロールは production の Environment で動く GitHub Ac
   });
 });
 
+test('閲覧者への応答から Server ヘッダーを外す', () => {
+  site.hasResourceProperties('AWS::CloudFront::ResponseHeadersPolicy', {
+    ResponseHeadersPolicyConfig: Match.objectLike({
+      RemoveHeadersConfig: { Items: [{ Header: 'Server' }] },
+    }),
+  });
+});
+
 test('A と AAAA のエイリアスレコードを作る', () => {
   site.resourceCountIs('AWS::Route53::RecordSet', 2);
 });

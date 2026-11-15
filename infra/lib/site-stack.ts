@@ -53,6 +53,8 @@ export class SiteStack extends cdk.Stack {
           override: true,
         },
       },
+      // オリジンの S3 が返す Server ヘッダーを、閲覧者への応答から外す
+      removeHeaders: ['Server'],
     });
 
     // キャッシュの期間は、デプロイ時にオブジェクトに付ける Cache-Control に従う
