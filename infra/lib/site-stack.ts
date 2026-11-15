@@ -8,6 +8,7 @@ import * as s3 from 'aws-cdk-lib/aws-s3';
 import * as cdk from 'aws-cdk-lib/core';
 import { Construct } from 'constructs';
 import type { HostedZoneConfig } from './config';
+import { contentSecurityPolicy } from './content-security-policy';
 
 export interface SiteStackProps extends cdk.StackProps {
   domainName: string;
@@ -16,16 +17,6 @@ export interface SiteStackProps extends cdk.StackProps {
   githubRepository: string;
   githubEnvironment: string;
 }
-
-// ビルドした index.html にはインラインのスクリプトとスタイルがないので、CSP は 'self' だけで足りる
-const contentSecurityPolicy = [
-  "default-src 'self'",
-  "base-uri 'self'",
-  "object-src 'none'",
-  "frame-ancestors 'none'",
-  "form-action 'none'",
-  'upgrade-insecure-requests',
-].join('; ');
 
 export class SiteStack extends cdk.Stack {
   constructor(scope: Construct, id: string, props: SiteStackProps) {
