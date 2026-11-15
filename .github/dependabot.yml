@@ -34,3 +34,7 @@ updates:
     groups:
       infra-minor-and-patch:
         update-types: [minor, patch]
+    ignore:
+      # @types/node は実行環境の Node.js のメジャーバージョンに合わせて、手動で上げる
+      - dependency-name: '@types/node'
+        update-types: ['version-update:semver-major']
