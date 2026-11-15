@@ -17,6 +17,13 @@ updates:
     groups:
       web-minor-and-patch:
         update-types: [minor, patch]
+    ignore:
+      # typescript-eslint が対応するまで、TypeScript はパッチの更新だけにする
+      - dependency-name: typescript
+        update-types: ['version-update:semver-minor', 'version-update:semver-major']
+      # @types/node は実行環境の Node.js のメジャーバージョンに合わせて、手動で上げる
+      - dependency-name: '@types/node'
+        update-types: ['version-update:semver-major']
 
   - package-ecosystem: npm
     directory: /infra
