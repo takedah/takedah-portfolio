@@ -1,0 +1,94 @@
+@import "tailwindcss";
+@import "@digital-go-jp/tailwind-theme-plugin/v4";
+@import "@fontsource-variable/noto-sans-jp";
+
+/* dark: は data-theme="dark" を付けたときに効く。OS の設定は下の @media で反映する */
+@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
+
+@theme {
+  --font-sans: "Noto Sans JP Variable", "Noto Sans JP", sans-serif;
+
+  /* キーカラーを DADS のプリミティブの赤に置き換える */
+  --color-key-50: var(--color-red-50);
+  --color-key-100: var(--color-red-100);
+  --color-key-200: var(--color-red-200);
+  --color-key-300: var(--color-red-300);
+  --color-key-400: var(--color-red-400);
+  --color-key-500: var(--color-red-500);
+  --color-key-600: var(--color-red-600);
+  --color-key-700: var(--color-red-700);
+  --color-key-800: var(--color-red-800);
+  --color-key-900: var(--color-red-900);
+  --color-key-1000: var(--color-red-1000);
+  --color-key-1100: var(--color-red-1100);
+  --color-key-1200: var(--color-red-1200);
+}
+
+/* 役割ごとの色。bg-surface、text-primary などのクラスで使う */
+@theme inline {
+  --color-surface: var(--surface);
+  --color-surface-raised: var(--surface-raised);
+  --color-fg: var(--fg);
+  --color-fg-muted: var(--fg-muted);
+  --color-line: var(--line);
+  --color-primary: var(--primary);
+  --color-primary-hover: var(--primary-hover);
+  --color-primary-subtle: var(--primary-subtle);
+}
+
+/* ライト（コントラスト比は背景に対する値） */
+:root {
+  --surface: var(--color-white);
+  --surface-raised: var(--color-solid-gray-50);
+  --fg: var(--color-solid-gray-800);          /* 12.6:1 */
+  --fg-muted: var(--color-solid-gray-600);    /* 5.74:1 */
+  --line: var(--color-solid-gray-420);        /* 3.03:1（カードの枠線） */
+  --primary: var(--color-red-900);            /* 5.79:1 */
+  --primary-hover: var(--color-red-1000);
+  --primary-subtle: var(--color-red-50);
+  color-scheme: light;
+}
+
+/* ダーク：OS の設定に従う（ユーザーがライトを選んだときを除く）＋ 明示的に選んだとき */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --surface: var(--color-solid-gray-900);
+    --surface-raised: var(--color-solid-gray-800);
+    --fg: var(--color-solid-gray-50);         /* 15.8:1 */
+    --fg-muted: var(--color-solid-gray-420);  /* 5.74:1 */
+    --line: var(--color-solid-gray-600);      /* 3.03:1 */
+    --primary: var(--color-red-400);          /* 6.51:1 */
+    --primary-hover: var(--color-red-300);
+    --primary-subtle: var(--color-red-1200);
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --surface: var(--color-solid-gray-900);
+  --surface-raised: var(--color-solid-gray-800);
+  --fg: var(--color-solid-gray-50);
+  --fg-muted: var(--color-solid-gray-420);
+  --line: var(--color-solid-gray-600);
+  --primary: var(--color-red-400);
+  --primary-hover: var(--color-red-300);
+  --primary-subtle: var(--color-red-1200);
+  color-scheme: dark;
+}
+
+@layer base {
+  body {
+    @apply bg-surface text-fg font-sans text-std-16N-170;
+  }
+
+  /* DADS のフォーカス表示：黒の外枠＋Yellow-300。テーマによらず変えない */
+  :focus-visible {
+    outline: 4px solid var(--color-black);
+    outline-offset: 2px;
+    box-shadow: 0 0 0 2px var(--color-yellow-300);
+  }
+
+  /* 本文中のリンクは DADS どおり青（未訪問）と紫（訪問済み） */
+  a:where(.prose-link) {
+    @apply text-blue-1000 underline visited:text-magenta-900;
+  }
+}
