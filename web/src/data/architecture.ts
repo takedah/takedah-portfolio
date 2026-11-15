@@ -45,7 +45,7 @@ export const designPoints: DesignPoint[] = [
     icon: Clock,
     title: 'キャッシュの設計',
     description:
-      'ハッシュ付きのファイルは 1 年キャッシュします。index.html は no-cache にし、CloudFront のキャッシュポリシーでも最小 TTL を 0 にしています。使わなくなったアセットも 30 日は残し、更新前に開いたページでも、そのページが参照する JS、CSS、フォントを読み込めるようにしています。',
+      'ハッシュ付きのファイルは 1 年キャッシュします。index.html は no-cache にし、CloudFront のキャッシュポリシーでも最小 TTL を 0 にしています。使わなくなったアセットはすぐには消さず、アップロードから 30 日たったものだけを消して、デプロイの前に開いたページへの影響を減らしています。',
   },
   {
     icon: ShieldCheck,

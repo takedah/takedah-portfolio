@@ -137,9 +137,20 @@ test('セキュリティヘッダーのポリシーを作り、デフォルト�
   const headers = resourceProps('AWS::CloudFront::ResponseHeadersPolicy').ResponseHeadersPolicyConfig
     .SecurityHeadersConfig;
   const csp: string = headers.ContentSecurityPolicy.ContentSecurityPolicy;
-  expect(csp).toContain("default-src 'self'");
-  expect(csp).toContain("frame-ancestors 'none'");
-  expect(csp).not.toContain('unsafe-');
+  const directives = Object.fromEntries(
+    csp.split(';').map((directive) => {
+      const [name, ...sources] = directive.trim().split(/\s+/);
+      return [name, sources];
+    }),
+  );
+  expect(directives).toEqual({
+    'default-src': ["'self'"],
+    'base-uri': ["'self'"],
+    'object-src': ["'none'"],
+    'frame-ancestors': ["'none'"],
+    'form-action': ["'none'"],
+    'upgrade-insecure-requests': [],
+  });
   expect(headers.ContentSecurityPolicy.Override).toBe(true);
   expect(headers.ContentTypeOptions).toEqual({ Override: true });
   expect(headers.FrameOptions).toEqual({ FrameOption: 'DENY', Override: true });
