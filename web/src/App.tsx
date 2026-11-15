@@ -1,6 +1,7 @@
 import { Footer } from './components/Footer'
 import { Header } from './components/Header'
 import { About } from './sections/About'
+import { Architecture } from './sections/Architecture'
 import { Certifications } from './sections/Certifications'
 import { Expertise } from './sections/Expertise'
 import { Hero } from './sections/Hero'
@@ -16,8 +17,9 @@ function App() {
         <About />
         <Expertise />
         <Certifications />
-        <Projects />
         <Writing />
+        <Projects />
+        <Architecture />
       </main>
       <Footer />
     </>

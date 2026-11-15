@@ -1,6 +1,6 @@
 import { expect, test } from './fixtures'
 
-const sectionTitles = ['自己紹介', '専門分野', '資格', '公開リポジトリ', 'アウトプット']
+const sectionTitles = ['自己紹介', '専門分野', '資格', 'アウトプット', '公開リポジトリ', 'このサイトの構成']
 
 test('本番と同じ CSP の下で、主要なセクションが表示される', async ({ page }) => {
   await page.goto('/')
@@ -81,8 +81,9 @@ test.describe('デスクトップ', () => {
       ['About', 'about'],
       ['Expertise', 'expertise'],
       ['Certifications', 'certifications'],
-      ['Projects', 'projects'],
       ['Writing', 'writing'],
+      ['Projects', 'projects'],
+      ['Architecture', 'architecture'],
     ]) {
       await nav.getByRole('link', { name: label }).click()
       await expect(page).toHaveURL(new RegExp(`#${id}$`))
@@ -96,7 +97,7 @@ test.describe('動きを減らす設定', () => {
 
   test('動きを減らす設定では、画面外のセクションも最初から表示されている', async ({ page }) => {
     await page.goto('/')
-    await expect(page.locator('#writing > div')).toHaveCSS('opacity', '1')
+    await expect(page.locator('#architecture > div')).toHaveCSS('opacity', '1')
   })
 })
 

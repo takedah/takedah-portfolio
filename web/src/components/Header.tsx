@@ -5,8 +5,9 @@ const nav = [
   { href: '#about', label: 'About' },
   { href: '#expertise', label: 'Expertise' },
   { href: '#certifications', label: 'Certifications' },
-  { href: '#projects', label: 'Projects' },
   { href: '#writing', label: 'Writing' },
+  { href: '#projects', label: 'Projects' },
+  { href: '#architecture', label: 'Architecture' },
 ]
 
 export function Header() {
@@ -17,7 +18,7 @@ export function Header() {
           {profile.name}
         </a>
         <nav aria-label="ページ内" className="flex items-center gap-6">
-          <ul className="hidden gap-6 md:flex">
+          <ul className="hidden gap-6 lg:flex">
             {nav.map((item) => (
               <li key={item.href}>
                 <a href={item.href} className="text-std-16N-170 text-fg-muted hover:text-primary">
