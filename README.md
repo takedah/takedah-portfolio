@@ -106,3 +106,4 @@ npx cdk deploy --all --profile <プロファイル名>
 
 - `web/src/data/` にあるプロフィール、経歴、記事などの文章
 - `web/public/badges/` の資格のバッジの画像（AWS の商標を含みます）
+- 猫の写真（`web/src/assets/avatar.jpg`、`web/public/favicon.png`、`web/public/apple-touch-icon.png`）

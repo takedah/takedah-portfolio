@@ -1,3 +1,4 @@
+import avatarUrl from '../assets/avatar.jpg'
 import { profile } from '../data/profile'
 import { ThemeToggle } from './ThemeToggle'
 
@@ -14,7 +15,8 @@ export function Header() {
   return (
     <header className="sticky top-0 z-10 border-b border-line bg-surface/90 backdrop-blur">
       <div className="mx-auto flex h-16 max-w-5xl items-center justify-between px-6">
-        <a href="#top" className="text-std-18B-160">
+        <a href="#top" className="inline-flex items-center gap-2 text-std-18B-160">
+          <img src={avatarUrl} alt="" width={32} height={32} className="size-8 rounded-full object-cover" />
           {profile.name}
         </a>
         <nav aria-label="ページ内" className="flex items-center gap-6">
