@@ -1,16 +1,26 @@
+import { Footer } from './components/Footer'
+import { Header } from './components/Header'
+import { About } from './sections/About'
+import { Certifications } from './sections/Certifications'
+import { Expertise } from './sections/Expertise'
+import { Hero } from './sections/Hero'
+import { Projects } from './sections/Projects'
+import { Writing } from './sections/Writing'
+
 function App() {
   return (
-    <main className="mx-auto max-w-5xl px-6 py-24">
-      <p className="text-std-16B-170 text-primary">Government Cloud / AWS Network</p>
-      <h1 className="mt-2 text-std-45B-140">takedah</h1>
-      <p className="mt-4 text-fg-muted">テーマの動作確認用</p>
-      <a
-        href="https://github.com/takedah"
-        className="mt-8 inline-block rounded-8 bg-primary px-6 py-3 text-std-16B-170 text-white hover:bg-primary-hover"
-      >
-        GitHub
-      </a>
-    </main>
+    <>
+      <Header />
+      <main>
+        <Hero />
+        <About />
+        <Expertise />
+        <Certifications />
+        <Projects />
+        <Writing />
+      </main>
+      <Footer />
+    </>
   )
 }
 

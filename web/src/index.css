@@ -2,7 +2,7 @@
 @import "@digital-go-jp/tailwind-theme-plugin/v4";
 @import "@fontsource-variable/noto-sans-jp";
 
-/* dark: は data-theme="dark" を付けたときに効く。OS の設定は下の @media で反映する */
+/* dark: のクラスは、html 要素に data-theme="dark" を付けたときに有効になる。OS の設定は下の @media で反映する */
 @custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
 
 @theme {
@@ -34,6 +34,9 @@
   --color-primary: var(--primary);
   --color-primary-hover: var(--primary-hover);
   --color-primary-subtle: var(--primary-subtle);
+  --color-on-primary: var(--on-primary);
+  --color-link: var(--link);
+  --color-link-visited: var(--link-visited);
 }
 
 /* ライト（コントラスト比は背景に対する値） */
@@ -46,10 +49,13 @@
   --primary: var(--color-red-900);            /* 5.79:1 */
   --primary-hover: var(--color-red-1000);
   --primary-subtle: var(--color-red-50);
+  --on-primary: var(--color-white);           /* Red-900 との比 5.79:1 */
+  --link: var(--color-blue-1000);             /* 14.22:1 */
+  --link-visited: var(--color-magenta-900);   /* 8.50:1 */
   color-scheme: light;
 }
 
-/* ダーク：OS の設定に従う（ユーザーがライトを選んだときを除く）＋ 明示的に選んだとき */
+/* ダーク：OS の設定がダークのとき（ユーザーがライトを選んだときを除く）と、ユーザーがダークを選んだときに使う */
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
     --surface: var(--color-solid-gray-900);
@@ -60,6 +66,9 @@
     --primary: var(--color-red-400);          /* 6.51:1 */
     --primary-hover: var(--color-red-300);
     --primary-subtle: var(--color-red-1200);
+    --on-primary: var(--color-solid-gray-900); /* Red-400 との比 6.51:1 */
+    --link: var(--color-blue-300);            /* 8.76:1 */
+    --link-visited: var(--color-magenta-300); /* 8.76:1 */
     color-scheme: dark;
   }
 }
@@ -72,15 +81,33 @@
   --primary: var(--color-red-400);
   --primary-hover: var(--color-red-300);
   --primary-subtle: var(--color-red-1200);
+  --on-primary: var(--color-solid-gray-900);
+  --link: var(--color-blue-300);
+  --link-visited: var(--color-magenta-300);
   color-scheme: dark;
 }
 
+/* ネットワークを思わせるドットの背景 */
+@utility bg-network {
+  background-image: radial-gradient(circle at 1px 1px, var(--line) 1px, transparent 0);
+  background-size: 24px 24px;
+}
+
 @layer base {
+  html {
+    scroll-padding-top: 5rem;
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    html {
+      scroll-behavior: smooth;
+    }
+  }
+
   body {
     @apply bg-surface text-fg font-sans text-std-16N-170;
   }
 
-  /* DADS のフォーカス表示：黒の外枠＋Yellow-300。テーマによらず変えない */
+  /* DADS のフォーカス表示：黒の外枠と、その内側の Yellow-300 の線。テーマによらず変えない */
   :focus-visible {
     outline: 4px solid var(--color-black);
     outline-offset: 2px;
@@ -89,6 +116,6 @@
 
   /* 本文中のリンクは DADS どおり青（未訪問）と紫（訪問済み） */
   a:where(.prose-link) {
-    @apply text-blue-1000 underline visited:text-magenta-900;
+    @apply text-link underline visited:text-link-visited;
   }
 }
