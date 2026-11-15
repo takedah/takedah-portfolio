@@ -48,7 +48,7 @@ jobs:
           role-to-assume: ${{ vars.AWS_ROLE_ARN }}
           aws-region: ap-northeast-1
 
-      # ハッシュ付きのファイルは中身が変わると名前も変わるので、1 年キャッシュする
+      # ハッシュ付きのファイルは中身が変わると名前も変わるので、1 年キャッシュする。古いファイルは、更新前のページを開いている閲覧者のために残す
       - name: Upload hashed assets
         run: aws s3 sync dist/assets "s3://$S3_BUCKET/assets" --cache-control "public, max-age=31536000, immutable"
 
@@ -56,10 +56,18 @@ jobs:
       - name: Upload other files
         run: aws s3 sync dist "s3://$S3_BUCKET" --delete --exclude "assets/*" --cache-control "no-cache"
 
-      # 新しい index.html を置いたあとで、使われなくなった古いファイルを消す
-      - name: Remove old assets
-        run: aws s3 sync dist/assets "s3://$S3_BUCKET/assets" --delete --cache-control "public, max-age=31536000, immutable"
-
       # CloudFront にキャッシュされた古いファイルを無効化する
       - name: Invalidate CloudFront cache
         run: aws cloudfront create-invalidation --distribution-id "$DISTRIBUTION_ID" --paths "/*"
+
+      # 今のビルドで使わないアセットのうち、30 日より前に置いたものだけを消す
+      - name: Remove expired assets
+        run: |
+          cutoff=$(date -u -d '30 days ago' +%Y-%m-%dT%H:%M:%S)
+          aws s3api list-objects-v2 --bucket "$S3_BUCKET" --prefix assets/ --output json \
+            | jq -r --arg cutoff "$cutoff" '.Contents // [] | .[] | select(.LastModified < $cutoff) | .Key' \
+            | while read -r key; do
+                if [ ! -e "dist/$key" ]; then
+                  aws s3 rm "s3://$S3_BUCKET/$key"
+                fi
+              done

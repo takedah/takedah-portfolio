@@ -57,12 +57,20 @@ export class SiteStack extends cdk.Stack {
       removeHeaders: ['Server'],
     });
 
-    // キャッシュの期間は、デプロイ時にオブジェクトに付ける Cache-Control に従う
+    // 最小 TTL を 0 にして、デプロイ時にオブジェクトに付ける Cache-Control に従う。no-cache のファイルは、CloudFront もリクエストのたびにオリジンへ更新を確かめる
+    const cachePolicy = new cloudfront.CachePolicy(this, 'CachePolicy', {
+      minTtl: cdk.Duration.seconds(0),
+      defaultTtl: cdk.Duration.days(1),
+      maxTtl: cdk.Duration.days(365),
+      enableAcceptEncodingGzip: true,
+      enableAcceptEncodingBrotli: true,
+    });
+
     const distribution = new cloudfront.Distribution(this, 'Distribution', {
       defaultBehavior: {
         origin: origins.S3BucketOrigin.withOriginAccessControl(bucket),
         viewerProtocolPolicy: cloudfront.ViewerProtocolPolicy.REDIRECT_TO_HTTPS,
-        cachePolicy: cloudfront.CachePolicy.CACHING_OPTIMIZED,
+        cachePolicy,
         responseHeadersPolicy,
       },
       defaultRootObject: 'index.html',
